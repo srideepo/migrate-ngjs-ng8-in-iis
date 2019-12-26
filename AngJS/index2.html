@@ -1,0 +1,43 @@
+<html ng-app="myApp">
+    <head>
+        <title>My AngularJS App</title>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular.min.js"></script>
+        <script>
+            var myApp = angular.module('myApp', []);
+            
+            myApp.controller('countryController', function($scope, $http) {                    
+                $http({
+                        method: 'GET',
+                        url: '/api/values'
+                    })
+                    .then(function successCallback(response) {
+                        $scope.countries = response.data;
+                    }, function errorCallback(response) {
+                        console.log('Something went wrong.');
+                    });    
+                
+                // ALTERNATIVE METHOD    
+                /*$http.get('countries.json')
+                    .then(function successCallback(response) {
+                        $scope.countries = response.data;
+                    }, function errorCallback(response) {
+                        console.log('Something went wrong.');
+                    });*/    
+            });
+        </script>        
+    </head>
+    <body>        
+        <div ng-controller="countryController">
+            <table style="border:1px solid #CCC; margin-top:10px">                
+                <tr>
+                    <th>Country</th>
+                    <th>Capital</th>
+                </tr>
+                <tr ng-repeat="country in countries | orderBy:'name'">
+                    <td>{{country.name}}</td>
+                    <td>{{country.capital}}</td>
+                </tr>
+            </table>    
+        </div>    
+    </body>
+</html>
